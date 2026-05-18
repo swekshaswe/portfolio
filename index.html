@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Swechchha Rahangdale | Business Analytics Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #faf9f6; font-family: 'Outfit', sans-serif; -webkit-font-smoothing: antialiased; color: #1e1b2e; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #f6f4fb; }
+  ::-webkit-scrollbar-thumb { background: rgba(124,111,205,0.4); border-radius: 3px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: 62px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%; background: transparent;
+    transition: background 0.35s, border-color 0.35s, backdrop-filter 0.35s;
+    border-bottom: 1px solid transparent;
+  }
+  nav.scrolled {
+    background: rgba(250,249,246,0.93);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(124,111,205,0.12);
+  }
+  .nav-logo { font-weight: 800; font-size: 18px; color: #2c2640; letter-spacing: -0.5px; }
+  .nav-logo span { color: #7c6fcd; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: #5a5470;
+    padding: 6px 13px; border-radius: 8px; text-decoration: none;
+    transition: color 0.2s, background 0.2s;
+  }
+  .nav-links a:hover { color: #7c6fcd; background: rgba(124,111,205,0.07); }
+
+  /* SECTIONS */
+  section { padding: 110px 5%; }
+
+  /* CHIP */
+  .chip {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 1.4px; text-transform: uppercase; color: #7c6fcd;
+    background: rgba(124,111,205,0.1); padding: 5px 14px; border-radius: 100px;
+    border: 1px solid rgba(124,111,205,0.22);
+  }
+
+  /* SECTION HEADER */
+  .sec-head { text-align: center; margin-bottom: 60px; }
+  .sec-head h2 {
+    font-size: clamp(26px, 4vw, 40px); font-weight: 800; color: #1e1b2e;
+    letter-spacing: -1px; line-height: 1.15; margin: 14px 0 12px;
+  }
+  .sec-head p { font-size: 15px; color: #8a849a; max-width: 460px; margin: 0 auto; line-height: 1.6; }
+
+  /* CARD */
+  .card {
+    background: #fff; border-radius: 18px;
+    border: 1px solid rgba(124,111,205,0.1);
+    box-shadow: 0 2px 20px rgba(124,111,205,0.07);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 10px 36px rgba(124,111,205,0.15); }
+
+  /* TAG */
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 600; color: #7c6fcd;
+    background: rgba(124,111,205,0.09); padding: 4px 11px; border-radius: 100px;
+    border: 1px solid rgba(124,111,205,0.16);
+  }
+
+  /* BUTTON */
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+    padding: 10px 22px; border-radius: 10px; text-decoration: none; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    border: none;
+  }
+  .btn-dark { background: #1e1b2e; color: #fff; box-shadow: 0 4px 18px rgba(30,27,46,0.2); }
+  .btn-dark:hover { background: #7c6fcd; box-shadow: 0 8px 28px rgba(124,111,205,0.4); transform: translateY(-2px); }
+  .btn-purple { background: #7c6fcd; color: #fff; box-shadow: 0 4px 18px rgba(124,111,205,0.32); }
+  .btn-purple:hover { background: #6a5cb8; box-shadow: 0 8px 28px rgba(124,111,205,0.45); transform: translateY(-2px); }
+  .btn-ghost { background: rgba(255,255,255,0.07); color: #fff; border: 1px solid rgba(255,255,255,0.14); }
+  .btn-ghost:hover { background: rgba(124,111,205,0.3); border-color: rgba(124,111,205,0.5); transform: translateY(-2px); }
+
+  /* FADE-IN ANIMATION */
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .fade-left { opacity: 0; transform: translateX(-28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .fade-left.visible { opacity: 1; transform: translateX(0); }
+  .fade-right { opacity: 0; transform: translateX(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .fade-right.visible { opacity: 1; transform: translateX(0); }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; position: relative; overflow: hidden; padding-top: 80px;
+  }
+  .orb {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    animation: floatorb 7s ease-in-out infinite;
+  }
+  .orb1 { width: 440px; height: 440px; top: -110px; left: -80px; background: rgba(124,111,205,0.11); }
+  .orb2 { width: 300px; height: 300px; top: 42%; right: -60px; background: rgba(155,141,232,0.08); animation-delay: -3s; animation-duration: 9s; }
+  .orb3 { width: 220px; height: 220px; bottom: 6%; left: 22%; background: rgba(184,168,240,0.08); animation-delay: -5s; animation-duration: 11s; }
+  @keyframes floatorb {
+    0%, 100% { transform: translate(0,0); }
+    33% { transform: translate(18px, 22px); }
+    66% { transform: translate(-12px, 10px); }
+  }
+  .hero-badge {
+    display: inline-block; background: rgba(124,111,205,0.1); border: 1px solid rgba(124,111,205,0.22);
+    border-radius: 100px; padding: 6px 18px; margin-bottom: 28px;
+    font-size: 13px; color: #7c6fcd; font-weight: 600;
+  }
+  #hero h1 {
+    font-size: clamp(44px, 8vw, 80px); font-weight: 900; color: #1e1b2e;
+    line-height: 1.04; letter-spacing: -3px; margin-bottom: 18px;
+  }
+  #hero h1 span { color: #7c6fcd; }
+  #hero .subtitle { font-size: clamp(16px, 2.5vw, 21px); font-weight: 600; color: #5a5470; margin-bottom: 14px; }
+  #hero .intro { font-size: 15px; color: #8a849a; line-height: 1.75; max-width: 540px; margin: 0 auto 38px; }
+  .hero-dots { display: flex; gap: 32px; justify-content: center; margin-top: 56px; flex-wrap: wrap; }
+  .hero-dot { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #8a849a; font-weight: 500; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  /* ─── ABOUT ─── */
+  #about { background: #faf9f6; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; max-width: 1100px; margin: 0 auto; }
+  #about h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; color: #1e1b2e; line-height: 1.12; letter-spacing: -1px; margin: 16px 0 22px; }
+  #about p { font-size: 15px; color: #6b6580; line-height: 1.82; margin-bottom: 18px; }
+  .about-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .about-card { background: #fff; border-radius: 16px; padding: 20px; border: 1px solid rgba(124,111,205,0.1); box-shadow: 0 2px 16px rgba(124,111,205,0.06); transition: transform 0.2s, box-shadow 0.2s; }
+  .about-card:hover { transform: translateY(-4px); box-shadow: 0 8px 26px rgba(124,111,205,0.13); }
+  .about-card .icon { font-size: 28px; margin-bottom: 10px; }
+  .about-card .label { font-weight: 700; font-size: 13px; color: #1e1b2e; margin-bottom: 5px; }
+  .about-card .desc { font-size: 12px; color: #9a93aa; line-height: 1.55; }
+
+  /* ─── SKILLS ─── */
+  #skills { background: #f6f4fb; }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; max-width: 1100px; margin: 0 auto; }
+  .skill-card { padding: 26px 22px; }
+  .skill-card .cat-icon { font-size: 30px; margin-bottom: 12px; }
+  .skill-card .cat-name { font-weight: 700; font-size: 14px; color: #1e1b2e; margin-bottom: 16px; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+
+  /* ─── EXPERIENCE ─── */
+  #experience { background: #faf9f6; }
+  .exp-wrap { max-width: 860px; margin: 0 auto; position: relative; padding-left: 40px; }
+  .exp-line { position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, rgba(124,111,205,0.55), rgba(124,111,205,0.06)); border-radius: 2px; }
+  .exp-item { position: relative; margin-bottom: 46px; }
+  .exp-item:last-child { margin-bottom: 0; }
+  .exp-dot { position: absolute; left: -48px; top: 8px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid #faf9f6; }
+  .exp-card { padding: 26px 28px; }
+  .exp-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+  .exp-role { font-weight: 800; font-size: 17px; color: #1e1b2e; }
+  .exp-company { font-weight: 600; font-size: 13px; margin-top: 3px; }
+  .exp-period { font-size: 11px; font-weight: 500; color: #9a93aa; background: #f6f4fb; padding: 5px 12px; border-radius: 100px; white-space: nowrap; }
+  .exp-list { margin: 14px 0 18px; padding-left: 18px; }
+  .exp-list li { font-size: 13px; color: #6b6580; line-height: 1.72; margin-bottom: 7px; }
+  .exp-tags { display: flex; gap: 7px; flex-wrap: wrap; }
+
+  /* ─── PROJECTS ─── */
+  #projects { background: #f6f4fb; }
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 26px; max-width: 1100px; margin: 0 auto; }
+  .proj-card { border-radius: 22px; overflow: hidden; }
+  .proj-img {
+    height: 220px; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; position: relative; overflow: hidden;
+    border-bottom: 1px solid rgba(124,111,205,0.09);
+  }
+  .proj-img .big-icon { font-size: 52px; margin-bottom: 12px; position: relative; z-index: 1; }
+  .proj-img .upload-hint {
+    font-size: 11px; font-weight: 600; padding: 5px 14px; border-radius: 100px;
+    border-style: dashed; border-width: 1px; position: relative; z-index: 1;
+  }
+  .proj-img .deco1 { position: absolute; top: -28px; right: -28px; width: 110px; height: 110px; border-radius: 50%; }
+  .proj-img .deco2 { position: absolute; bottom: -18px; left: -18px; width: 75px; height: 75px; border-radius: 50%; }
+  .proj-body { padding: 26px 26px; }
+  .proj-title { font-weight: 800; font-size: 17px; color: #1e1b2e; margin-bottom: 10px; line-height: 1.3; }
+  .proj-desc { font-size: 13px; color: #7a7390; line-height: 1.72; margin-bottom: 18px; }
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
+
+  /* ─── CERTS ─── */
+  #certifications { background: #faf9f6; }
+  .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+  .cert-card { border-radius: 18px; overflow: hidden; }
+  .cert-img {
+    height: 126px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(124,111,205,0.08), rgba(155,141,232,0.15));
+    border-bottom: 1px solid rgba(124,111,205,0.09);
+  }
+  .cert-img .c-icon { font-size: 34px; margin-bottom: 7px; }
+  .cert-img .c-hint { font-size: 10px; font-weight: 600; color: #9b8de8; background: rgba(124,111,205,0.1); padding: 3px 10px; border-radius: 100px; border: 1px dashed rgba(124,111,205,0.28); }
+  .cert-body { padding: 14px 16px; }
+  .cert-name { font-weight: 700; font-size: 12px; color: #1e1b2e; line-height: 1.4; margin-bottom: 5px; }
+  .cert-issuer { font-size: 11px; color: #9a93aa; font-weight: 500; }
+
+  /* ─── CONTACT ─── */
+  #contact { background: #1e1b2e; }
+  .contact-inner { max-width: 680px; margin: 0 auto; text-align: center; }
+  #contact .chip { color: #9b8de8; background: rgba(155,141,232,0.15); border-color: rgba(155,141,232,0.28); }
+  #contact h2 { font-size: clamp(28px, 5vw, 50px); font-weight: 900; color: #fff; margin: 16px 0 14px; letter-spacing: -1.5px; line-height: 1.08; }
+  #contact p { font-size: 15px; color: #6b6384; line-height: 1.72; margin-bottom: 44px; }
+  .contact-links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .footer-line { margin-top: 64px; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 28px; font-size: 12px; color: #3d3858; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .proj-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Swechchha<span>.</span></div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div style="position:relative;z-index:1;max-width:820px;width:100%">
+    <div class="hero-badge fade-up">📊 Open to Opportunities</div>
+    <h1 class="fade-up" style="transition-delay:0.1s">
+      Swechchha<br><span>Rahangdale</span>
+    </h1>
+    <p class="subtitle fade-up" style="transition-delay:0.2s">Business Analytics & Data Visualization Enthusiast</p>
+    <p class="intro fade-up" style="transition-delay:0.3s">
+      Computer Science graduate passionate about marketing analytics, dashboarding, business insights, and data visualization. Skilled in Power BI, SQL, Python, and Alteryx.
+    </p>
+    <div class="fade-up" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;transition-delay:0.4s">
+      <a href="https://github.com/swekshaswe" target="_blank" class="btn btn-dark">⌘ GitHub</a>
+      <a href="https://www.linkedin.com/in/swechchha-rahangdale/" target="_blank" class="btn btn-purple">in LinkedIn</a>
+    </div>
+    <div class="hero-dots fade-up" style="transition-delay:0.55s">
+      <div class="hero-dot"><span class="dot" style="background:#7c6fcd"></span>Power BI</div>
+      <div class="hero-dot"><span class="dot" style="background:#9b8de8"></span>SQL</div>
+      <div class="hero-dot"><span class="dot" style="background:#b8a8f0"></span>Python</div>
+      <div class="hero-dot"><span class="dot" style="background:#7c6fcd"></span>Alteryx</div>
+      <div class="hero-dot"><span class="dot" style="background:#c4b8f5"></span>Excel</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="fade-left">
+      <div class="chip">About Me</div>
+      <h2>Turning data into<br><span style="color:#7c6fcd">business clarity</span></h2>
+      <p>I'm a Computer Science graduate with a strong interest in business analytics and data-driven decision making. I love transforming raw datasets into meaningful insights through dashboards, visualizations, and automated workflows.</p>
+      <p>With hands-on experience in Python, SQL, Power BI, and Alteryx, I specialize in building analytics solutions that help teams make smarter, faster decisions — from marketing campaign optimization to operational efficiency.</p>
+    </div>
+    <div class="about-cards fade-right">
+      <div class="about-card">
+        <div class="icon">📣</div>
+        <div class="label">Marketing Analytics</div>
+        <div class="desc">Campaign performance & audience insights</div>
+      </div>
+      <div class="about-card">
+        <div class="icon">📊</div>
+        <div class="label">Dashboarding</div>
+        <div class="desc">Power BI & interactive visual reports</div>
+      </div>
+      <div class="about-card">
+        <div class="icon">🔍</div>
+        <div class="label">Data Analysis</div>
+        <div class="desc">EDA, cleaning & KPI modeling</div>
+      </div>
+      <div class="about-card">
+        <div class="icon">💬</div>
+        <div class="label">Communication</div>
+        <div class="desc">Translating data for stakeholders</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-head fade-up">
+    <div class="chip">Skills</div>
+    <h2>What I work with</h2>
+    <p>A blend of technical tools, analytical platforms, and business acumen.</p>
+  </div>
+  <div class="skills-grid">
+    <div class="card skill-card fade-up" style="transition-delay:0s">
+      <div class="cat-icon">📊</div>
+      <div class="cat-name">Technical Skills</div>
+      <div class="skill-tags">
+        <span class="tag">Data Analysis</span>
+        <span class="tag">Exploratory Data Analysis</span>
+        <span class="tag">Dashboarding</span>
+        <span class="tag">Data Visualization</span>
+      </div>
+    </div>
+    <div class="card skill-card fade-up" style="transition-delay:0.08s">
+      <div class="cat-icon">🛠️</div>
+      <div class="cat-name">Tools & Platforms</div>
+      <div class="skill-tags">
+        <span class="tag">Power BI</span>
+        <span class="tag">Alteryx</span>
+        <span class="tag">Excel</span>
+        <span class="tag">GitHub</span>
+        <span class="tag">Meta Business Suite</span>
+      </div>
+    </div>
+    <div class="card skill-card fade-up" style="transition-delay:0.16s">
+      <div class="cat-icon">💻</div>
+      <div class="cat-name">Programming</div>
+      <div class="skill-tags">
+        <span class="tag">Python</span>
+        <span class="tag">SQL</span>
+        <span class="tag">C</span>
+      </div>
+    </div>
+    <div class="card skill-card fade-up" style="transition-delay:0.24s">
+      <div class="cat-icon">🤝</div>
+      <div class="cat-name">Soft Skills</div>
+      <div class="skill-tags">
+        <span class="tag">Leadership</span>
+        <span class="tag">Communication</span>
+        <span class="tag">Team Collaboration</span>
+        <span class="tag">Strategic Planning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sec-head fade-up">
+    <div class="chip">Experience</div>
+    <h2>Professional journey</h2>
+    <p>Internships, leadership roles, and real-world analytics impact.</p>
+  </div>
+  <div class="exp-wrap">
+    <div class="exp-line"></div>
+
+    <!-- EXP 1 -->
+    <div class="exp-item fade-up">
+      <div class="exp-dot" style="background:#7c6fcd;box-shadow:0 0 0 3px rgba(124,111,205,0.22)"></div>
+      <div class="card exp-card">
+        <div class="exp-top">
+          <div>
+            <div class="exp-role">Digital Marketing Intern</div>
+            <div class="exp-company" style="color:#7c6fcd">Anherb Naturals</div>
+          </div>
+          <span class="exp-period">June – August 2025</span>
+        </div>
+        <ul class="exp-list">
+          <li>Planned and executed digital marketing campaigns, collaborating with cross-functional teams.</li>
+          <li>Managed and scheduled content using Meta Business Suite.</li>
+          <li>Applied data-driven insights and engagement analysis to optimize campaign performance and audience reach.</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="tag">Meta Business Suite</span>
+          <span class="tag">Campaign Analytics</span>
+          <span class="tag">Content Strategy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXP 2 -->
+    <div class="exp-item fade-up" style="transition-delay:0.1s">
+      <div class="exp-dot" style="background:#9b8de8;box-shadow:0 0 0 3px rgba(155,141,232,0.22)"></div>
+      <div class="card exp-card">
+        <div class="exp-top">
+          <div>
+            <div class="exp-role">Alteryx On Campus Intern</div>
+            <div class="exp-company" style="color:#9b8de8">Medicaps University</div>
+          </div>
+          <span class="exp-period">May – July 2025</span>
+        </div>
+        <ul class="exp-list">
+          <li>Applied Alteryx to design and automate data workflows, improving efficiency in data processing and analysis.</li>
+          <li>Analyzed large datasets and developed interactive dashboards to support data-driven decision-making.</li>
+        </ul>
+        <div class="exp-tags">
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#9b8de8;background:rgba(155,141,232,0.1);padding:4px 11px;border-radius:100px;border:1px solid rgba(155,141,232,0.2)">Alteryx</span>
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#9b8de8;background:rgba(155,141,232,0.1);padding:4px 11px;border-radius:100px;border:1px solid rgba(155,141,232,0.2)">Dashboarding</span>
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#9b8de8;background:rgba(155,141,232,0.1);padding:4px 11px;border-radius:100px;border:1px solid rgba(155,141,232,0.2)">Data Workflows</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXP 3 -->
+    <div class="exp-item fade-up" style="transition-delay:0.2s">
+      <div class="exp-dot" style="background:#c4b8f5;box-shadow:0 0 0 3px rgba(196,184,245,0.28)"></div>
+      <div class="card exp-card">
+        <div class="exp-top">
+          <div>
+            <div class="exp-role">Cultural Club Leadership</div>
+            <div class="exp-company" style="color:#b8a8f0">Medicaps University</div>
+          </div>
+          <span class="exp-period">2022 – 2024</span>
+        </div>
+        <ul class="exp-list">
+          <li>Led management and technical teams for large-scale university events, coordinating operations, content execution, and workflow management across cross-functional teams.</li>
+          <li>Planned event strategies, managed audience engagement initiatives, and collaborated with multiple teams to ensure smooth execution and participation.</li>
+        </ul>
+        <div class="exp-tags">
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#b8a8f0;background:rgba(184,168,240,0.12);padding:4px 11px;border-radius:100px;border:1px solid rgba(184,168,240,0.25)">Leadership</span>
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#b8a8f0;background:rgba(184,168,240,0.12);padding:4px 11px;border-radius:100px;border:1px solid rgba(184,168,240,0.25)">Event Management</span>
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#b8a8f0;background:rgba(184,168,240,0.12);padding:4px 11px;border-radius:100px;border:1px solid rgba(184,168,240,0.25)">Audience Engagement</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-head fade-up">
+    <div class="chip">Projects</div>
+    <h2>Featured work</h2>
+    <p>Analytics projects showcasing dashboards, data pipelines, and business insights.</p>
+  </div>
+  <div class="proj-grid">
+
+    <!-- PROJECT 1 -->
+    <div class="card proj-card fade-up">
+       <img src="your-screenshotpng.png" style="width:100%;height:auto;display:block;">
+        <div class="deco1" style="background:rgba(124,111,205,0.12)"></div>
+        <div class="deco2" style="background:rgba(124,111,205,0.1)"></div>
+           </div>
+      <div class="proj-body">
+        <div class="proj-title">Marketing Campaign Analytics Dashboard</div>
+        <p class="proj-desc">Built an interactive Power BI dashboard analyzing marketing KPIs including ROI, conversion rates, clicks, and campaign performance. Designed funnel analysis and customer segmentation visualizations to identify marketing effectiveness across channels and audience groups. Used data visualization and business analytics techniques to generate actionable campaign insights from a large-scale dataset.</p>
+        <div class="proj-tags">
+          <span class="tag">Power BI</span>
+          <span class="tag">Excel</span>
+          <span class="tag">Marketing Analytics</span>
+          <span class="tag">Dashboarding</span>
+        </div>
+        <a href="https://github.com/swekshaswe/Marketing_Campaign_Dashoard.git" target="_blank" class="btn btn-dark">⌘ View on GitHub</a>
+      </div>
+    </div>
+
+    <!-- PROJECT 2 -->
+    <div class="card proj-card fade-up" style="transition-delay:0.15s">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:950px;margin:0 auto;">
+<img src="dashboard1.png" style="width:100%;display:block;border-radius:12px;">
+<img src="dashboard2.png" style="width:100%;display:block;border-radius:12px;">
+<img src="dashboard3.png" style="width:100%;display:block;border-radius:12px;">
+<img src="dashboard4.png" style="width:100%;display:block;border-radius:12px;">
+</div>
+        <div class="deco1" style="background:rgba(155,141,232,0.12)"></div>
+        <div class="deco2" style="background:rgba(155,141,232,0.1)"></div>
+              </div>
+      <div class="proj-body">
+        <div class="proj-title">Sales Data Analysis & Decision Support System</div>
+        <p class="proj-desc">Developed an interactive sales analytics dashboard using Python and Streamlit to visualize revenue trends, product performance, and regional insights. Implemented data cleaning, aggregation, and KPI analysis using Pandas. Built a query-based decision support system inspired by RAG and Agentic AI concepts. Integrated DevOps practices using GitHub Actions for CI/CD automation.</p>
+        <div class="proj-tags">
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#9b8de8;background:rgba(155,141,232,0.1);padding:4px 11px;border-radius:100px;border:1px solid rgba(155,141,232,0.2)">Python</span>
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#9b8de8;background:rgba(155,141,232,0.1);padding:4px 11px;border-radius:100px;border:1px solid rgba(155,141,232,0.2)">Streamlit</span>
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#9b8de8;background:rgba(155,141,232,0.1);padding:4px 11px;border-radius:100px;border:1px solid rgba(155,141,232,0.2)">Pandas</span>
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#9b8de8;background:rgba(155,141,232,0.1);padding:4px 11px;border-radius:100px;border:1px solid rgba(155,141,232,0.2)">GitHub Actions</span>
+          <span style="display:inline-block;font-size:11px;font-weight:600;color:#9b8de8;background:rgba(155,141,232,0.1);padding:4px 11px;border-radius:100px;border:1px solid rgba(155,141,232,0.2)">Data Analysis</span>
+        </div>
+        <a href="https://github.com/swekshaswe/sales-data-analysis-system.git" target="_blank" class="btn btn-dark">⌘ View on GitHub</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="sec-head fade-up">
+    <div class="chip">Certifications</div>
+    <h2>Credentials & recognition</h2>
+    <p>Certifications across analytics and leadership.</p>
+  </div>
+  <div class="cert-grid">
+    <div class="card cert-card fade-up" style="transition-delay:0s">
+      <img src="dataanalytics.png" style="width:100%;height:220px;object-fit:contain;">      
+      <div class="cert-body"><div class="cert-name">Google Data Analytics</div><div class="cert-issuer">Google / Coursera</div></div>
+    </div>
+    <div class="card cert-card fade-up" style="transition-delay:0.07s">
+      <img src="alteryx.png" style="width:100%;height:220px;object-fit:contain;">
+      <div class="cert-body"><div class="cert-name">Alteryx Certification</div><div class="cert-issuer">Alteryx</div></div>
+    </div>
+    <div class="card cert-card fade-up" style="transition-delay:0.14s">
+      <img src="devops.png" style="width:100%;height:220px;object-fit:contain;">      
+<div class="cert-body"><div class="cert-name">DevOps Mastery Specialization</div><div class="cert-issuer">KodeKloud</div></div>
+    </div>
+    <div class="card cert-card fade-up" style="transition-delay:0.21s">
+      <img src="technicalhead.png" style="width:100%;height:220px;object-fit:contain;">
+      <div class="cert-body"><div class="cert-name">Technical Head – Cultural Club</div><div class="cert-issuer">Medicaps University</div></div>
+    </div>
+    <div class="card cert-card fade-up" style="transition-delay:0.28s">
+     <img src="managementhead.png" style="width:100%;height:220px;object-fit:contain;">
+      <div class="cert-body"><div class="cert-name">Management Co-Head – Cultural Club</div><div class="cert-issuer">Medicaps University</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner fade-up">
+    <div class="chip">Contact</div>
+    <h2>Let's connect</h2>
+    <p>Open to Business Analytics, Marketing Analytics, Social Media Managing and Data Visualization roles. Feel free to reach out!</p>
+    <div class="contact-links">
+      <a href="mailto:srahangd@purdue.edu" class="btn btn-ghost">✉ srahangd@purdue.edu</a>
+      <a href="mailto:swechchharahangdale@gmail.com" class="btn btn-ghost">✉ swechchharahangdale@gmail.com</a>
+      <a href="https://www.linkedin.com/in/swechchha-rahangdale/" target="_blank" class="btn btn-ghost">in LinkedIn</a>
+      <a href="https://github.com/swekshaswe?tab=repositories" target="_blank" class="btn btn-ghost">⌘ GitHub</a>
+    </div>
+    <div class="footer-line">Built with ❤️ by Swechchha Rahangdale &nbsp;·&nbsp; 2025</div>
+  </div>
+</section>
+
+<script>
+  // Sticky nav
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Scroll reveal
+  const els = document.querySelectorAll('.fade-up, .fade-left, .fade-right');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+
+  // Hero elements visible on load
+  document.querySelectorAll('#hero .fade-up').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 100 + i * 120);
+  });
+</script>
+</body>
+</html>
